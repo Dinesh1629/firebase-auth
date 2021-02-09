@@ -1,46 +1,67 @@
-import React, { useCallback, useContext } from "react";
-import login from './Login';
-import { withRouter, Redirect } from "react-router";
-import app from "./firebase";
- import { AuthContext } from "./Auth";
+import React from 'react';
+import fire from './config/fire';
+import './App.css';
+import { Form, Button } from 'bootstrap';
 
-// const Login = ({ history }) => {
-//   const handleLogin = useCallback(
-//     async event => {
-//       event.preventDefault();
-//       const { email, password } = event.target.elements;
-//       try {
-//         await app
-//           .auth()
-//           .signInWithEmailAndPassword(email.value, password.value);
-//         history.push("/");
-//       } catch (error) {
-//         alert(error);
-//       }
-//     },
-//     [history]
-//   );
+ 
 
-//   const { currentUser } = useContext(AuthContext);
 
-//   if (currentUser) {
-//     return <Redirect to="/" />;
-//   }
+class Login extends React.Component{
 
-  
-    <div>
-      <h1>Log in</h1>
-      <form >
-        <label>
-          Email
-          <input name="email" type="email" placeholder="Email" />
-        </label>
-        <label>
-          Password
-          <input name="password" type="password" placeholder="Password" />
-        </label>
-        <button type="submit">Log in</button>
-      </form>
-    </div>
-  
+
+
+    login(){
+       const email= document.querySelector("#email").value;
+       const password= document.querySelector("#password").value;
+
+       fire.auth().signInWithEmailAndPassword(email,password)
+       .then((u) => {
+         console.log("Successfully logged in");
+       })
+       .catch((err) =>{
+           console.log("Error "+err.tostring());
+       })
+    }
+
+
+    signup(){
+
+        const email= document.querySelector("#email").value;
+       const password= document.querySelector("#password").value;
+
+       fire.auth().createUserWithEmailAndPassword(email,password)
+       .then((u) => {
+         console.log("Successfully signed in");
+       })
+       .catch((err) =>{
+           console.log("Error "+err.tostring());
+       })
+    }
+
+
+
+render(){
+    return(
+        <div style={{textAlign:'center'}} class="main">
+        <div>
+            <label ><b>Email Id : </b></label>
+        <input type="text" placeholder="Enter Email id" id="email" required />
+        </div>
+        <br />
+        <div>
+           <label ><b>Password : </b></label>
+        <input type="password" placeholder="Enter Password" id="password" required />
+        </div> 
+        <br />       
+        <div>
+            <button onClick={this.login}>Login</button>
+            <button onClick={this.signup}>Signup</button>
+        </div>
+        </div> 
+
+    )
+};
+}
+
+
 export default Login;
